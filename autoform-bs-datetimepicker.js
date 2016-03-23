@@ -16,12 +16,12 @@ AutoForm.addInputType("bootstrap-datetimepicker", {
     return val;
   },
   valueOut: function () {
-    var m = this.data("DateTimePicker").getDate();
-    
+    var m = this.data("DateTimePicker").date();
+
     if (!m) {
       return m;
     }
-    
+
     var timezoneId = this.attr("data-timezone-id");
     // default is local, but if there's a timezoneId, we use that
     if (typeof timezoneId === "string") {
@@ -77,11 +77,11 @@ Template.afBootstrapDateTimePicker.helpers({
   }
 });
 
-Template.afBootstrapDateTimePicker.rendered = function () {
+Template.afBootstrapDateTimePicker.onRendered(function () {
   var $input = this.$('input');
   var data = this.data;
   var opts = data.atts.dateTimePickerOptions || {};
-  
+
   // To be able to properly detect a cleared field, the defaultDate,
   // which is "" by default, must be null instead. Otherwise we get
   // the current datetime when we call getDate() on an empty field.
@@ -99,9 +99,9 @@ Template.afBootstrapDateTimePicker.rendered = function () {
 
     // set field value
     if (data.value instanceof Date) {
-      dtp.setDate(data.value);
+      dtp.date(data.value);
     } else {
-      dtp.setDate(); // clear
+      dtp.date(); // clear
     }
 
     // set start date if there's a min in the schema
@@ -115,11 +115,11 @@ Template.afBootstrapDateTimePicker.rendered = function () {
     }
   });
 
-};
+});
 
-Template.afBootstrapDateTimePicker.destroyed = function () {
+Template.afBootstrapDateTimePicker.onDestroyed(function () {
   var dtp = this.$('input').data("DateTimePicker");
   if (dtp) {
     dtp.destroy();
   }
-};
+});
